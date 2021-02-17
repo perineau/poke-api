@@ -36,8 +36,8 @@ class PokemonsList : Fragment() {
 
         api.getPokemonCount { count ->
             api.getPokemons(count) { list ->
-                Log.e("qsdqsd",list.toString())
-                adapter.submitList(list)
+                Log.e("qsdqsd", list.toString())
+                adapter.submitList(list.sortedWith(compareBy { it.name }))
                 binding.progressBar.visibility = View.GONE
             }
         }

@@ -5,13 +5,8 @@ import android.util.Log
 import android.widget.Toast
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
-import com.android.volley.toolbox.RequestFuture
 import fr.perineau.pokeapi.data.Pokemon
 import fr.perineau.pokeapi.data.PokemonDetails
-import org.json.JSONObject
-import java.util.ArrayList
-import java.util.concurrent.Future
-import java.util.concurrent.TimeUnit
 
 
 class PokemonApi(private val context: Context) {
@@ -62,7 +57,7 @@ class PokemonApi(private val context: Context) {
         volley.addToRequestQueue(jsonObjectRequest)
     }
 
-    fun getPokemonDetails(id: Int, callback: (PokemonDetails) -> Unit){
+    fun getPokemonDetails(id: Int, callback: (PokemonDetails) -> Unit) {
 
         val jsonObjectRequest = JsonObjectRequest(
             Request.Method.GET, "${url}/pokemon/%d".format(id), null,
