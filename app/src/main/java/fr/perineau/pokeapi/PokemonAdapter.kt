@@ -1,26 +1,49 @@
 package fr.perineau.pokeapi
 
+import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import fr.perineau.pokeapi.data.Pokemon
+import fr.perineau.pokeapi.databinding.PokemonListBinding
 
-class PokemonAdapter: ListAdapter<Pokemon,PokemonAdapter.PokemonViewHolder>(DiffPokemon()) {
+class PokemonAdapter(): ListAdapter<Pokemon,PokemonAdapter.PokemonViewHolder>(DiffPokemon()) {
 
-    class PokemonViewHolder(val view: View) : RecyclerView.ViewHolder(view){
+    class PokemonViewHolder(private var binding: PokemonListBinding) : RecyclerView.ViewHolder(binding.root){
+
+        fun bind(item: Pokemon) {
+            binding.name.text = item.name
+            binding.root.setOnClickListener { view: View ->
+                view.findNavController().navigate(PokemonsListDirections.actionPokemonsListToPokemonDetails(item.id))
+            }
+        }
+
+
+        companion object {
+            fun from(parent: ViewGroup): PokemonViewHolder {
+                val layoutInflater = LayoutInflater.from(parent.context)
+                val binding = PokemonListBinding.inflate(layoutInflater, parent, false)
+                return PokemonAdapter.PokemonViewHolder(binding)
+            }
+        }
 
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PokemonViewHolder {
-        TODO("Not yet implemented")
+        return PokemonViewHolder.from(parent)
     }
 
     override fun onBindViewHolder(holder: PokemonViewHolder, position: Int) {
-        TODO("Not yet implemented")
+        holder.bind(getItem(position))
     }
 }
+
 
 class DiffPokemon: DiffUtil.ItemCallback<Pokemon>(){
     override fun areItemsTheSame(oldItem: Pokemon, newItem: Pokemon): Boolean {

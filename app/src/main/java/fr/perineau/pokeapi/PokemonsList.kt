@@ -7,6 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
 import fr.perineau.pokeapi.data.Pokemon
@@ -31,6 +34,10 @@ class PokemonsList : Fragment() {
         val view = binding.root
 
         binding.progressBar.visibility = View.VISIBLE
+        val adapter = PokemonAdapter()
+        binding.pokemonList.adapter = adapter
+        binding.pokemonList.layoutManager = LinearLayoutManager(context)
+
 
         val url = "https://pokeapi.co/api/v2/pokemon?limit=%d"
 
@@ -46,21 +53,24 @@ class PokemonsList : Fragment() {
                             val pokemon = pokemonListResponse.getJSONObject(pokemonIndex)
                             pokemonList.add(
                                 Pokemon(pokemon.getString("name"),
-                                        pokemon.getString("url").split("/").dropLast(1).last(),null)
+                                        pokemon.getString("url").split("/").dropLast(1).last().toInt(),null)
                             )
 
                         }
 
                         Log.e("test", pokemonList.toString())
-
+                        binding.progressBar.visibility = View.GONE
+                        adapter.submitList(pokemonList)
                     },
                     { error ->
                         Toast.makeText(context,error.message,Toast.LENGTH_LONG).show()
+                        binding.progressBar.visibility = View.GONE
                     })
                 VolleyInstance.getInstance(requireContext()).addToRequestQueue(jsonObjectRequest2)
             },
             { error ->
                 Toast.makeText(context,error.message,Toast.LENGTH_LONG).show()
+                binding.progressBar.visibility = View.GONE
             }
         )
         VolleyInstance.getInstance(requireContext()).addToRequestQueue(jsonObjectRequest)

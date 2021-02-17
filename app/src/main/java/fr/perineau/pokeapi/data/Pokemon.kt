@@ -1,3 +1,3 @@
 package fr.perineau.pokeapi.data
 
-data class Pokemon(val name:String,val id:String, val sprite: Byte?)
+data class Pokemon(var name:String,var id:Int, var sprite: Byte?)

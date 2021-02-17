@@ -1,15 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/navigation"
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/navigation"
     app:startDestination="@id/pokemonsList">
 
     <fragment
         android:id="@+id/pokemonsList"
         android:name="fr.perineau.pokeapi.PokemonsList"
-        android:label="fragment_pokemons_list"
-        tools:layout="@layout/fragment_pokemons_list" >
+        android:label="PokemonsList" >
         <action
             android:id="@+id/action_pokemonsList_to_pokemonDetails"
             app:destination="@id/pokemonDetails" />
@@ -17,15 +14,12 @@
     <fragment
         android:id="@+id/pokemonDetails"
         android:name="fr.perineau.pokeapi.PokemonDetails"
-        android:label="fragment_pokemon_details"
-        tools:layout="@layout/fragment_pokemon_details" >
+        android:label="PokemonDetails" >
         <action
             android:id="@+id/action_pokemonDetails_to_pokemonsList"
-            app:destination="@id/pokemonsList"
-            app:popUpTo="@id/pokemonsList"
-            app:popUpToInclusive="false" />
+            app:destination="@id/pokemonsList" />
         <argument
-            android:name="id"
+            android:name="pokemonId"
             app:argType="integer" />
     </fragment>
 </navigation>
