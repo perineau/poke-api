@@ -1,5 +1,6 @@
 package fr.perineau.pokeapi
 
+import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -11,25 +12,28 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import fr.perineau.pokeapi.data.Pokemon
+import fr.perineau.pokeapi.data.VolleyInstance
 import fr.perineau.pokeapi.databinding.PokemonListBinding
 
-class PokemonAdapter(): ListAdapter<Pokemon,PokemonAdapter.PokemonViewHolder>(DiffPokemon()) {
+class PokemonAdapter() : ListAdapter<Pokemon, PokemonAdapter.PokemonViewHolder>(DiffPokemon()) {
 
-    class PokemonViewHolder(private var binding: PokemonListBinding) : RecyclerView.ViewHolder(binding.root){
+    class PokemonViewHolder(private var binding: PokemonListBinding,private val context: Context) :
+        RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: Pokemon) {
             binding.name.text = item.name
             binding.root.setOnClickListener { view: View ->
-                view.findNavController().navigate(PokemonsListDirections.actionPokemonsListToPokemonDetails(item.id))
+                view.findNavController()
+                    .navigate(PokemonsListDirections.actionPokemonsListToPokemonDetails(item.id))
             }
+            //binding.pokemonImage.setImageUrl(item.sprite,VolleyInstance.getInstance(context).imageLoader)
         }
-
-
+        
         companion object {
             fun from(parent: ViewGroup): PokemonViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val binding = PokemonListBinding.inflate(layoutInflater, parent, false)
-                return PokemonAdapter.PokemonViewHolder(binding)
+                return PokemonAdapter.PokemonViewHolder(binding,parent.context)
             }
         }
 
@@ -45,7 +49,7 @@ class PokemonAdapter(): ListAdapter<Pokemon,PokemonAdapter.PokemonViewHolder>(Di
 }
 
 
-class DiffPokemon: DiffUtil.ItemCallback<Pokemon>(){
+class DiffPokemon : DiffUtil.ItemCallback<Pokemon>() {
     override fun areItemsTheSame(oldItem: Pokemon, newItem: Pokemon): Boolean {
         return oldItem.id == oldItem.id
     }

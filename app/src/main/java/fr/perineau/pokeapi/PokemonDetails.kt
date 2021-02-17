@@ -14,7 +14,7 @@ class PokemonDetails : Fragment() {
 
 
 
-    https://pokeapi.co/api/v2/pokemon/{arg.pokemon.id}
+    //https://pokeapi.co/api/v2/pokemon/{arg.pokemon.id}
 
     val args: PokemonDetailsArgs by navArgs()
 
@@ -25,9 +25,9 @@ class PokemonDetails : Fragment() {
 
     private fun jsonParse() {
         val url = "https://pokeapi.co/api/v2/pokemon/{pokemonId}"
-        val request = JsonObjectRequest(Request.Method.GET, url, null, Response.Listener {
+        /*val request = JsonObjectRequest(Request.Method.GET, url, null, Response.Listener {
                 response ->try {
-        })
+        })*/
 
     }
 
