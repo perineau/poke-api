@@ -5,9 +5,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import fr.perineau.pokeapi.api.PokemonApi
+import fr.perineau.pokeapi.data.Pokemon
 import fr.perineau.pokeapi.databinding.FragmentPokemonsListBinding
 
 
@@ -34,10 +37,18 @@ class PokemonsList : Fragment() {
         binding.pokemonList.layoutManager = LinearLayoutManager(context)
         val api = PokemonApi(requireContext())
 
+        var pokemonList = ArrayList<Pokemon>()
+        binding.search.doOnTextChanged { text, start, before, count ->
+            if (text != null){
+                adapter.submitList(pokemonList.filter { pokemon -> pokemon.name.startsWith(text) })
+            }else{
+                adapter.submitList(pokemonList)
+            }
+        }
         api.getPokemonCount { count ->
             api.getPokemons(count) { list ->
-                Log.e("qsdqsd", list.toString())
-                adapter.submitList(list.sortedWith(compareBy { it.name }))
+                pokemonList = ArrayList(list.sortedWith(compareBy { it.name }))
+                adapter.submitList(pokemonList)
                 binding.progressBar.visibility = View.GONE
             }
         }
