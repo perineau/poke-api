@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/navigation"
-    app:startDestination="@id/pokemonsList">
+    app:startDestination="@id/pokemonsList"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <fragment
         android:id="@+id/pokemonsList"
         android:name="fr.perineau.pokeapi.PokemonsList"
-        android:label="PokemonsList" >
+        android:label="PokemonsList"
+        tools:layout="@layout/fragment_pokemons_list">
         <action
             android:id="@+id/action_pokemonsList_to_pokemonDetails"
             app:destination="@id/pokemonDetails" />
@@ -14,7 +16,8 @@
     <fragment
         android:id="@+id/pokemonDetails"
         android:name="fr.perineau.pokeapi.PokemonDetails"
-        android:label="PokemonDetails" >
+        android:label="PokemonDetails"
+        tools:layout="@layout/fragment_pokemon_details">
         <action
             android:id="@+id/action_pokemonDetails_to_pokemonsList"
             app:destination="@id/pokemonsList" />
