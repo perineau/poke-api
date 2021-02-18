@@ -21,17 +21,20 @@ import com.android.volley.toolbox.Volley
 import fr.perineau.pokeapi.api.PokemonApi
 import fr.perineau.pokeapi.api.VolleyInstance
 import fr.perineau.pokeapi.data.Pokemon
+import fr.perineau.pokeapi.databinding.FragmentPokemonDetailsBinding
 import fr.perineau.pokeapi.databinding.FragmentPokemonsListBinding
 
 class PokemonDetails : Fragment() {
+
+    private var _binding: FragmentPokemonDetailsBinding? = null
+    // This property is only valid between onCreateView and
+    // onDestroyView.
+    private val binding get() = _binding!!
 
     private val args: PokemonDetailsArgs by navArgs()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        args.pokemonId
-        val pokemonApi = PokemonApi(requireContext())
-        pokemonApi.getPokemonDetails(args.pokemonId, {pokemonDetails -> })
     }
 
     override fun onCreateView(
@@ -39,6 +42,22 @@ class PokemonDetails : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_pokemon_details, container, false)
+
+        _binding = FragmentPokemonDetailsBinding.inflate(inflater, container, false)
+        val view = binding.root
+
+        binding.progressBar.visibility = View.VISIBLE
+        val pokemonApi = PokemonApi(requireContext())
+        pokemonApi.getPokemonDetails(args.pokemonId) { pokemonDetails ->
+            binding.pokemon = pokemonDetails
+            binding.pokemonImage.setImageBitmap(pokemonDetails.sprite)
+            binding.progressBar.visibility = View.GONE
+        }
+        return view
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

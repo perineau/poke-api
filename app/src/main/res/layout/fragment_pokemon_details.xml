@@ -2,12 +2,28 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+        <variable
+            name="pokemon"
+            type="fr.perineau.pokeapi.data.PokemonDetails" />
+    </data>
+
     <RelativeLayout
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:background="@color/design_default_color_primary"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".PokemonDetails">
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_centerInParent="true"
+            android:elevation="10dp"
+            android:visibility="gone"
+            android:indeterminate="true"
+            android:indeterminateDrawable="@drawable/indeterminate_progress"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -34,7 +50,7 @@
 
                     <TextView
                         android:id="@+id/name"
-                        android:text="Pikachu"
+                        android:text="@{pokemon.name}"
                         android:textSize="30sp"
                         android:textStyle="bold"
                         android:layout_width="wrap_content"
@@ -42,7 +58,7 @@
 
                     <TextView
                         android:id="@+id/height"
-                        android:text="Height"
+                        android:text="@{pokemon.height}"
                         android:layout_marginBottom="10dp"
                         android:textSize="16sp"
                         android:textStyle="bold"
@@ -51,7 +67,7 @@
 
                     <TextView
                         android:id="@+id/weight"
-                        android:text="Weight"
+                        android:text="@{pokemon.weight}"
                         android:layout_marginBottom="10dp"
                         android:textSize="16sp"
                         android:textStyle="bold"
