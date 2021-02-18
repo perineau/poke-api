@@ -50,6 +50,7 @@ class PokemonDetails : Fragment() {
         val pokemonApi = PokemonApi(requireContext())
         pokemonApi.getPokemonDetails(args.pokemonId) { pokemonDetails ->
             binding.pokemon = pokemonDetails
+            binding.types.text = pokemonDetails.types.reduce { acc, type -> "$acc / $type" }
             binding.pokemonImage.setImageBitmap(pokemonDetails.sprite)
             binding.progressBar.visibility = View.GONE
         }

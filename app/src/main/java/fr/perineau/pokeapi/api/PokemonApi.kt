@@ -72,9 +72,17 @@ class PokemonApi(private val context: Context) {
                 val name = response.getString("name")
                 val height = response.getString("height")
                 val weight = response.getString("weight")
+                val types = response.getJSONArray("types")
+                val typesNames = arrayListOf<String>()
+                for (index in 0 until types.length()) {
+                    val type = types.getJSONObject(index)
+                    val typeName = type.getJSONObject("type").getString("name")
+                    typesNames.add(typeName)
+                }
+
                 val request = ImageRequest(
                     url, { response ->
-                        val pokemon = PokemonDetails(name, response, height, weight)
+                        val pokemon = PokemonDetails(name, response, height, weight, typesNames)
                         callback(pokemon)
                     }, 0,
                     0, ScaleType.CENTER_CROP, Bitmap.Config.RGB_565, { error ->
