@@ -1,9 +1,14 @@
 package fr.perineau.pokeapi.api
 
+import android.R.attr.*
 import android.content.Context
+import android.graphics.Bitmap
 import android.util.Log
+import android.widget.ImageView
+import android.widget.ImageView.ScaleType
 import android.widget.Toast
 import com.android.volley.Request
+import com.android.volley.toolbox.ImageRequest
 import com.android.volley.toolbox.JsonObjectRequest
 import fr.perineau.pokeapi.data.Pokemon
 import fr.perineau.pokeapi.data.PokemonDetails
@@ -63,8 +68,20 @@ class PokemonApi(private val context: Context) {
             Request.Method.GET, "${url}/pokemon/%d".format(id), null,
             { response ->
                 val sprites = response.getJSONObject("sprites")
-                val spriteUrl = sprites.getString("front_default")
-                callback(PokemonDetails(spriteUrl))
+                val url = sprites.getString("front_default")
+                val name = response.getString("name")
+                val height = response.getString("height")
+                val weight = response.getString("weight")
+                val request = ImageRequest(
+                    url, { response ->
+                        val pokemon = PokemonDetails(name, response, height, weight)
+                        callback(pokemon)
+                    }, 0,
+                    0, ScaleType.CENTER_CROP, Bitmap.Config.RGB_565, { error ->
+                        Toast.makeText(context, "Pas d'image", Toast.LENGTH_SHORT).show()
+                    }
+                )
+                volley.addToRequestQueue(request)
 
             },
             { error ->
@@ -73,7 +90,6 @@ class PokemonApi(private val context: Context) {
             }
         )
         volley.addToRequestQueue(jsonObjectRequest)
+
     }
-
-
 }
